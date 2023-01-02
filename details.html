@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SMART PARKING DETAILS</title>
+    
+    
+  </head>
+<body>
+    
+
+     
+       
+<br>
+<br>
+<br>
+<fieldset> 
+    <legend><h1>VIEW DETAILS</h1></legend>
+    <center><div id="get"> 
+   <input type="text" name="userid" id="uid" placeholder="Enter your ID"/>
+    <button  onclick="myajax()">Get Details</button>
+  </div></center>
+</fieldset>
+
+
+
+       
+<br>
+<br>
+<br>
+<fieldset> 
+    <legend><h1>TICKET CHARGES</h1></legend>
+    <center><div id="get"> 
+   <input type="text" name="timeatparked" id="timeatparked" placeholder="Enter your timeatparked"/>
+   <input type="text" name="timeatout" id="timeatout" placeholder="Enter your timeatout"/>
+    <button  onclick="myajax1()">Get Ticket Charges</button>
+  </div></center>
+</fieldset>
+<center><button> <a href="main.html">NEXT</a></button></center>
+
+
+
+<script>
+    function myajax() {
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          document.getElementById("get").innerHTML=this.responseText;
+        }
+      };
+      var user = document.getElementById("uid").value;
+      console.log("user:",user);
+      xhttp.open("GET", "/getparkingoutinfo?userid=" + user, true);
+      xhttp.send();
+    }
+
+    function myajax1() {
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          console.log('RESPONSE TEXT');
+          console.log(this.responseText);
+          document.getElementById("get").innerHTML=this.responseText;
+        }
+      };
+      var user1 = document.getElementById("timeatparked").value;
+      var user2= document.getElementById("timeatout").value;
+      console.log("user1:",user1);
+      console.log("user2:",user2);
+      xhttp.open("GET", "/getticketinfo?timeatparked=" + user1 + "&timeatout=" + user2, true);
+     
+      xhttp.send();
+    }
+    
+  </script>
+  
+
+
+
+
+<style>
+    
+/* import popins, courgette font*/
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');
+ @import url('https://fonts.googleapis.com/css2?family=Courgette&display=swap');
+/* 
+
+/* I choose mobile device style as default, thats why style for it is outside the mediaquery*/
+*{
+    font-family:"Poppins";
+}
+body{
+    background-color:#112233;
+    height:100vh;
+    max-height:100vh;
+    overflow:hidden;
+    color: rgb(255, 255, 255);
+ 
+}
+.container{
+    text-align:center;
+}
+.text-medium{
+    font-size:2.2rem;
+}
+.text-white{
+    color:rgb(255, 255, 255);
+}
+ .logo{
+    float:left;
+}
+#circle { width: 90px; height: 90px; background: #FF4F00; }
+h1{
+    text-decoration-color:rgb(255, 255, 255);
+    margin-top:20px;
+    font-family:Italy;
+    font-size:30px;
+    text-shadow:1px 1px 1px rgb(172, 57, 187);
+    }
+    input,select{
+        width:60%;
+        padding:10px;
+        border:2px solid rgb(172, 19, 19);
+        box-shadow:-3px 1px 2px rgb(235, 231, 231),-3px 1px 4px #f8f7f6;
+        color:#1a130c;
+        border-radius:10px;
+        box-sizing:border-box;
+    
+    }
+    
+   
+    
+    label{
+        padding:8px;
+        display:inline-block;
+        font-size:14px;
+        color:#f4f4f4;
+        text-shadow:0 0 2px rgb(231, 223, 223),1px 1px rgb(31, 26, 26),-1px        -1px rgb(135, 107, 212),0 0 5px #ff8a00;
+   
+        width:40%;
+  
+    }  
+ 
+    button{
+       background-color: #4CAF50;  
+       color: white;  
+       padding: 16px 20px;  
+       margin: 8px 0;  
+       border: black;  
+       cursor: pointer;  
+       width: 100%;  
+       opacity: 0.9;  
+    
+    
+}
+.fix{
+    display:none;
+}
+
+
+
+/* This style will be applied to devices which have width greater than 500px*/
+@media only screen and (min-width:500px){
+    h1{
+        font-size:40px;
+    }
+
+footer{
+    position:absolute;
+    bottom:1px;
+       left:0;
+        
+}
+
+
+    body{
+     padding:0 5% 0 5%;
+    
+  }
+    label{
+    width:25%;
+    padding:0;
+    font-size:16px;
+    margin-top:10px;
+        
+    }
+    input,select{
+    width:60%;
+    margin-top:10px;
+    padding:20px;
+        
+    }
+    .fix{
+        display:inline-block;
+     
+    }
+    button{
+        
+        width:60%;
+        
+    }
+    
+}
+
+legend{
+    text-align:center;
+}
+.container1 {
+  font-weight:bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  flex-wrap: wrap;
+  width: 90vw;
+  margin: 0 auto;
+  min-height: 20vh;
+  text-shadow: 1px 1px 2px #112233;
+}
+.GET{
+    width:80px;
+    height:50px;
+    background-color:#ffffff;
+}
+</style>
+
+</body>
+
+
+</html>

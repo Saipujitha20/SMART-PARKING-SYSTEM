@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <title>Slots Booking</title>
+  </head>
+  <body>
+     
+    <h1>SMART PARKING</h1>
+    
+      <div class="login">
+        <section class="section-page"> <fieldset><legend><center>PARKING DETAILS IN</center></legend>
+      <form method="post" action="/enrollparkingin">
+          <input type="text" name="userid" id="userid" placeholder="Userid"  required="required" />
+          <input type="text" name="parkinglocation" id="parkinglocation" placeholder="parkinglocation" required="required" />
+          <!--<input type="text" name="date" id="date" placeholder="date" required="required" />-->
+          <input type="text" name="parkingid" id="parkingid" placeholder="parkingid" required="required" />
+          <input type="text" name="updateslot" id="updateslot" placeholder="updateslot" required="required" />
+          <input type="text" name="date" id="date" placeholder="Date" required="required"/>
+          <!--<input type="text" name="timeatparked" id="timeatparked" placeholder="timeatparked" required="required" />-->
+          <!--<button type="submit" onclick="document.getElementById('date_time_button').innerHTML = Date()">DATE</button>
+          <p id="date_time_button"></p>-->
+          <button name="register" type="submit"  value="enrollparkingin"  class="btn btn-primary btn-block btn-large">PARK IN</button><br>
+          <!--<input type="date" id="currentDate">
+          <input type="time" id="currentTime">-->
+          <button  class="btn btn-primary btn-block btn-large"><a  href="/public/timein.html">NEXT</a></button><br>
+          
+  
+      </form>
+    </fieldset>
+  </section>
+      <div>
+        <ul id='validation_messages'>
+            <li id='useridValidation' style="display:none;color:red">Userid should not be empty</li>
+            <li id='parkinglocationValidation' style="display:none;color:red">parkinglocation should not be empty</li>
+            <li id="dateValidation" style="display:none;color:red">date should not be empty</li>
+            <li id='parkingidValidation' style="display:none;color:red">parkingid should not be empty</li> 
+            <li id='updateslotValidation' style="display:none;color:red">updateslot should not be empty</li>
+            <li id='timeatparkedValidation' style="display:none;color:red">timeatparked should not be empty</li>
+            <li id='successmessage' style="display:none;color:green">Successfully registered.</li>
+          </ul>
+    </div>
+    </div>
+     
+        
+   <div class="seat-container">
+      <label> Select parking location</label>
+      <select id="movie">
+        <option value="20">BN's Parking Area</option>
+        <option value="30">LB's ParkInn</option>
+        <option value="25">HN ParkHere</option>
+        <option value="20">DN HamaraParking</option>
+      </select>
+    </div>
+
+   <ul class="showcase">
+      <li>
+        <div class="seat"></div>
+        <small><b>AVAILABLE</b></small>
+      </li>
+      <li>
+        <div class="seat selected"></div>
+        <small><b>SELECTED</b></small>
+      </li>
+      <li>
+        <div class="seat sold"></div>
+        <small><b>SOLD</b></small>
+      </li>
+    </ul>
+    <div class="container">
+      <div class="rows">
+
+      <div class="row-1">
+        <button class="seat"> 1</button>
+        <button class="seat"> 2</button>
+        <button class="seat"> 3</button>
+        <button class="seat"> 4</button>
+       <!-- <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>-->
+      </div>
+
+      <div class="row-2">
+       <!-- <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat sold"></div>-->
+        <button class="seat sold"> 5</BUTTON>
+        <button class="seat">6</button>
+        <button class="seat">7</button>
+        <button class="seat"> 8</button>
+      </div>
+      <div class="row-3">
+       <!-- <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>-->
+        <button class="seat"> 9</button>
+        <button class="seat"> 10</button>
+        <button class="seat sold"> 11</button>
+        <button class="seat sold"> 12</button>
+      </div>
+      <div class="row-4">
+        <button class="seat">13</button>
+        <button class="seat"> 14</button>
+        <button class="seat"> 15</button>
+        <button class="seat"> 16</button>
+       <!-- <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>-->
+      </div>
+      </div>
+      </div>
+      
+
+   <!---- <p class="text">
+      You have selected <span id="count">0</span> seat for a price of RS.<span
+        id="total"
+        >0</span
+      >
+    </p>-->
+    <script>
+      function myajax() {
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          document.getElementById("get").innerHTML=this.responseText;
+        }
+      };
+      var parkingin = document.getElementById("uid").value;
+      console.log("parkingin:",parkingin);
+      xhttp.open("GET", "/getparkingininfo?userid=" + parkingin, true);
+      xhttp.send();
+    }
+    
+   // seats
+     const container = document.querySelector(".container");
+      const seats = document.querySelectorAll(".row .seat:not(.sold)");
+      const count = document.getElementById("count");
+      const total = document.getElementById("total");
+      const movieSelect = document.getElementById("movie");
+
+      
+      var elems = document.getElementsByClassName("seat");
+    for (var i = 0; i < elems.length; i++) {
+  elems[i].onclick = function() {
+    var color = window.getComputedStyle(this, null)
+                .getPropertyValue("background-color");
+    this.style.backgroundColor = color === "rgb(255, 255, 255)" 
+                                 ? "rgb(255, 234, 0)" : "rgb(34, 255, 0)";
+  };
+};       
+
+      
+     /* populateUI();
+      
+      let ticketPrice = +movieSelect.value;
+      
+      // Save selected movie index and price
+      function setMovieData(movieIndex, moviePrice) {
+        localStorage.setItem("selectedMovieIndex", movieIndex);
+        localStorage.setItem("selectedMoviePrice", moviePrice);
+      }
+      
+      // Update total and count
+      function updateSelectedCount() {
+        const selectedSeats = document.querySelectorAll(".row .seat.selected");
+      
+        const seatsIndex = [...selectedSeats].map((seat) => [...seats].indexOf(seat));
+      
+        localStorage.setItem("selectedSeats", JSON.stringify(seatsIndex));
+      
+        const selectedSeatsCount = selectedSeats.length;
+      
+        count.innerText = selectedSeatsCount;
+        total.innerText = selectedSeatsCount * ticketPrice;
+      
+        setMovieData(movieSelect.selectedIndex, movieSelect.value);
+      }
+      
+      
+      // Get data from localstorage and populate UI
+      function populateUI() {
+        const selectedSeats = JSON.parse(localStorage.getItem("selectedSeats"));
+      
+        if (selectedSeats !== null && selectedSeats.length > 0) {
+          seats.forEach((seat, index) => {
+            if (selectedSeats.indexOf(index) > -1) {
+              console.log(seat.classList.add("selected"));
+            }
+          });
+        }
+      
+        const selectedMovieIndex = localStorage.getItem("selectedMovieIndex");
+      
+        if (selectedMovieIndex !== null) {
+          movieSelect.selectedIndex = selectedMovieIndex;
+          console.log(selectedMovieIndex)
+        }
+      }
+      console.log(populateUI())
+      // Movie select event
+      movieSelect.addEventListener("change", (e) => {
+        ticketPrice = +e.target.value;
+        setMovieData(e.target.selectedIndex, e.target.value);
+        updateSelectedCount();
+      });
+      */
+      // Seat click event
+      container.addEventListener("click", (e) => {
+        if (
+          e.target.classList.contains("seat") &&
+          !e.target.classList.contains("sold")
+        ) {
+          e.target.classList.toggle("selected");
+      
+        //  updateSelectedCount();
+        }
+      });
+      
+      // Initial count and total set
+     // updateSelectedCount();
+
+     // time and date
+
+     //var date = new Date();
+     //var currentDate = date.toISOString().substring(0,10);
+     //var currentTime = date.toISOString().substring(11,16);
+     //document.getElementById('currentDate').value = currentDate;
+     //document.getElementById('currentTime').value = currentTime;
+           
+      </script>
+ 
+
+
+
+
+  <style>
+    @import url("https://fonts.googleapis.com/css?family=Lato&display=swap");
+    
+    * {
+      box-sizing: border-box;
+    }
+    button {
+  background-color:rgb(255, 255, 255);
+}
+    button:focus {
+  background-color:rgb(255, 0, 0);
+}
+   
+
+    body {
+      position:center;
+      background-color: #000000;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      font-family: "Lato", sans-serif;
+     
+      margin: 0;
+    }
+    
+    .movie-container {
+      margin: 20px 0;
+    }
+    
+    .movie-container select {
+      
+      background-color: rgb(255, 255, 255);
+      border: 0;
+      border-radius: 10px;
+      font-size: 16px;
+      margin-left: 60px;
+      padding: 5px 15px 5px 15px;
+      -moz-appearance: none;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    
+    .container {
+      perspective: 10000px;
+      margin-bottom: 300px;
+    }
+    
+    .seat {
+      position:bottom;
+      background-color: #f5f8f5;
+      height: 60px;
+      width: 150px;
+      margin: 3px;
+      font-size: 50px;
+     /* border-top-left-radius: 10px;
+      border-top-right-radius: 10px;*/
+    }
+    
+    .seat.selected {
+      background-color: rgb(32, 197, 32);
+    }
+    
+    .seat.sold {
+      background-color: rgb(230, 31, 31);
+    }
+    
+    .seat:nth-of-type(2) {
+      margin-right: 18px;
+    }
+    
+    .seat:nth-last-of-type(2) {
+      margin-left: 18px;
+    }
+    
+    .seat:not(.sold):hover {
+      cursor: pointer;
+      transform: scale(1.2);
+    }
+    
+    .showcase .seat:not(.sold):hover {
+      cursor: default;
+      transform: scale(1);
+    }
+    
+    .showcase {
+      background: rgba(0, 0, 0, 0.1);
+      padding: 5px 10px;
+      border-radius: 5px;
+      color: rgb(255, 255, 255);
+      list-style-type: none;
+      display: flex;
+      justify-content: space-between;
+    }
+    
+    .showcase li {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 10px;
+    }
+    .showcase li small {
+      margin-left: 2px;
+    }
+    
+    .rows {
+      
+      display: flex;
+    }
+    
+   /* .screen {
+      background-color: #fff;
+      height: 120px;
+      width: 100%;
+      margin: 15px 0;
+      transform: rotateX(-48deg);
+      box-shadow: 0 3px 10px rgba(255, 255, 255, 0.7);
+    }*/
+    
+    p.text{
+        margin: 5px 0;
+    }
+    
+    p.text span{
+        color: rgb(158, 248, 158);
+    }
+
+    html { width: 100%; height:100%; overflow:hidden; }
+    
+.login { 
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    margin: -150px 0 0 -150px;
+    width:300px;
+    height:150px;
+}
+.login h1 { color: rgb(255, 255, 255); text-shadow: 0 0 10px rgba(0,0,0,0.3); letter-spacing:1px; text-align:center; }
+
+input {
+    position:center; 
+    width: 100%; 
+   
+    height:100%;
+    margin-bottom: 20px; 
+    background: rgba(255, 255, 255, 0.3);
+    border: none;
+    outline: none;
+    padding: 10px;
+    font-size: 20px;
+    color: rgb(255, 255, 255);
+    text-shadow: 1px 1px 1px rgba(237, 188, 188, 0.3);
+    border: 1px solid rgba(0,0,0,0.3);
+    border-radius: 5px;
+    box-shadow: inset 0 -5px 45px rgba(0, 0, 0, 0.2), 0 1px 1px rgba(10, 10, 10, 0.2);
+    -webkit-transition: box-shadow .5s ease;
+    -moz-transition: box-shadow .5s ease;
+    -o-transition: box-shadow .5s ease;
+    -ms-transition: box-shadow .5s ease;
+    transition: box-shadow .5s ease;
+}
+input:focus { box-shadow: inset 0 -5px 45px rgba(4, 0, 10, 0.4), 0 1px 1px rgba(6, 2, 19, 0.2); }
+
+.btn { display: inline-block; *display: inline; *zoom: 1; padding: 4px 10px 4px; margin-bottom: 0; font-size: 13px; line-height: 18px; color: #0a0808; text-align: center;text-shadow: 0 1px 1px rgba(29, 26, 26, 0.75); vertical-align: middle; background-color: #242020; background-image: -moz-linear-gradient(top, #080404, #1d0909); background-image: -ms-linear-gradient(top, #110d0d, #110d0d); background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0e0c0c), to(#161212)); background-image: -webkit-linear-gradient(top, #1a1818, #1a1313); background-image: -o-linear-gradient(top, #110f0f, #130d0d); background-image: linear-gradient(top, #0f0101, #070000); background-repeat: repeat-x; filter: progid:dximagetransform.microsoft.gradient(startColorstr=#ffffff, endColorstr=#e6e6e6, GradientType=0); border-color: #201e1e #050505 #1a1515; border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25); border: 1px solid #131212; -webkit-border-radius: 4px; -moz-border-radius: 4px; border-radius: 4px; -webkit-box-shadow: inset 0 1px 0 rgba(61, 60, 60, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05); -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05); cursor: pointer; *margin-left: .3em; }
+.btn:hover, .btn:active, .btn.active, .btn.disabled, .btn[disabled] { background-color: #44df29; }
+.btn-large { padding: 9px 14px; font-size: 15px; line-height: normal; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; }
+.btn:hover { color: #0f0101; text-decoration: none; background-color: #e6e6e6; background-position: 0 -15px; -webkit-transition: background-position 0.1s linear; -moz-transition: background-position 0.1s linear; -ms-transition: background-position 0.1s linear; -o-transition: background-position 0.1s linear; transition: background-position 0.1s linear; }
+.btn-primary, .btn-primary:hover { text-shadow: 0 -1px 0 rgba(255, 255, 255, 0.25); color: #ffffff; }
+.btn-primary.active { color: rgba(255, 255, 255, 0.75); }
+.btn-primary { background-color: #beb7c4; background-image: -moz-linear-gradient(top, #1d8f03, #008013); background-image: -ms-linear-gradient(top, #037514, #038016); background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#03760d), to(#057207)); background-image: -webkit-linear-gradient(top, #096c04, #027504); background-image: -o-linear-gradient(top, #6eb6de, #4a77d4); background-image: linear-gradient(top, #6eb6de, #4a77d4); background-repeat: repeat-x; filter: progid:dximagetransform.microsoft.gradient(startColorstr=#6eb6de, endColorstr=#4a77d4, GradientType=0);  border: 1px solid #3762bc; text-shadow: 1px 1px 1px rgba(0,0,0,0.4); box-shadow: inset 0 1px 0 rgba(22, 9, 9, 0.2), 0 1px 2px rgba(0, 0, 0, 0.5); }
+.btn-primary:hover, .btn-primary:active, .btn-primary.active, .btn-primary.disabled, .btn-primary[disabled] { filter: none; background-color: #787e75; }
+.btn-block { width: 100%; display:block; }
+
+* { -webkit-box-sizing:border-box; -moz-box-sizing:border-box; -ms-box-sizing:border-box; -o-box-sizing:border-box; box-sizing:border-box; }
+ 
+ /*logo*/
+ 
+ 
+ 
+ 
+ </style>
+     </body>
+</html>
